@@ -7,9 +7,17 @@ User = get_user_model()
 class Group(models.Model):
     """Модель для сообществ."""
 
-    title = models.TextField(max_length=50, verbose_name='Название')
-    slug = models.SlugField(unique=True, verbose_name='Слаг')
-    description = models.TextField(verbose_name='Описание')
+    title = models.TextField(
+        max_length=50,
+        verbose_name='Название'
+    )
+    slug = models.SlugField(
+        unique=True,
+        verbose_name='Слаг'
+    )
+    description = models.TextField(
+        verbose_name='Описание'
+    )
 
     class Meta:
         """Дополнительная информация о модели Group."""
@@ -85,9 +93,14 @@ class Comment(models.Model):
         related_name='comments',
         verbose_name='Связанный пост'
     )
-    text = models.TextField(verbose_name='Текст')
+    text = models.TextField(
+        verbose_name='Текст'
+    )
     created = models.DateTimeField(
-        auto_now_add=True, db_index=True, verbose_name='Дата добавления')
+        auto_now_add=True,
+        db_index=True,
+        verbose_name='Дата добавления'
+    )
 
     class Meta:
         """Дополнительная информация о модели Comment."""
