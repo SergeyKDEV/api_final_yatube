@@ -7,19 +7,33 @@ User = get_user_model()
 class Post(models.Model):
     """Модель для постов."""
 
-    text = models.TextField()
-    pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
+    text = models.TextField(verbose_name='Текст')
+    pub_date = models.DateTimeField(
+        auto_now_add=True, verbose_name='Дата публикации')
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='posts')
+        User,
+        on_delete=models.CASCADE,
+        related_name='posts',
+        verbose_name='Автор'
+    )
     image = models.ImageField(
-        upload_to='posts/', null=True, blank=True)
+        upload_to='posts/',
+        null=True,
+        blank=True,
+        verbose_name='Изображение'
+    )
+
+    class Meta:
+        """Дополнительная информация о модели Post."""
+        verbose_name = 'пост'
+        verbose_name_plural = 'Посты'
 
     def __str__(self) -> str:
         """Возвращает значение всех полей поста, кроме изображения."""
         return (
-            f'{self.text[:20]}, '
-            f'{self.pub_date}, '
-            f'{self.author}.'
+            f'{self.text[:20]} | '
+            f'{self.pub_date} | '
+            f'{self.author};'
         )
 
 
@@ -27,36 +41,54 @@ class Comment(models.Model):
     """Модель для комментариев."""
 
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='comments')
+        User,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Автор'
+    )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments')
-    text = models.TextField()
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
+        verbose_name='Связанный пост'
+    )
+    text = models.TextField(verbose_name='Текст')
     created = models.DateTimeField(
-        'Дата добавления', auto_now_add=True, db_index=True)
+        auto_now_add=True, db_index=True, verbose_name='Дата добавления')
+
+    class Meta:
+        """Дополнительная информация о модели Comment."""
+        verbose_name = 'комментарий'
+        verbose_name_plural = 'Комментарии'
 
     def __str__(self) -> str:
         """Возвращает значение всех полей комментария."""
         return (
-            f'{self.author}, '
-            f'{self.post}, '
-            f'{self.text[:20]}, '
-            f'{self.created}.'
+            f'{self.author} | '
+            f'{self.post} | '
+            f'{self.text[:20]} | '
+            f'{self.created};'
         )
 
 
 class Group(models.Model):
     """Модель для сообществ."""
 
-    title = models.TextField(max_length=50)
-    slug = models.SlugField(unique=True)
-    description = models.TextField()
+    title = models.TextField(max_length=50, verbose_name='Название')
+    slug = models.SlugField(unique=True, verbose_name='Слаг')
+    description = models.TextField(verbose_name='Описание')
+
+    class Meta:
+        """Дополнительная информация о модели Group."""
+        verbose_name = 'группы'
+        verbose_name_plural = 'Группы'
 
     def __str__(self) -> str:
         """Возвращает все поля сообщества."""
         return (
-            f'{self.title[:20]}, '
-            f'{self.slug}, '
-            f'{self.description}.'
+            f'{self.title[:20]} | '
+            f'{self.slug} | '
+            f'{self.description};'
         )
 
 
@@ -64,15 +96,28 @@ class Follow(models.Model):
     """Модель для подписок."""
 
     user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='user', null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name='user',
+        null=True,
+        verbose_name='Подписчик'
     )
     following = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='following', null=True
+        User,
+        on_delete=models.CASCADE,
+        related_name='following',
+        null=True,
+        verbose_name='Автор'
     )
+
+    class Meta:
+        """Дополнительная информация о модели Follow."""
+        verbose_name = 'подписки'
+        verbose_name_plural = 'Подписки'
 
     def __str__(self):
         """Возвращает все поля подписки."""
         return (
-            f'{self.user}, '
-            f'{self.following}.'
+            f'{self.user} -> '
+            f'{self.following};'
         )
