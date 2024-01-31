@@ -33,3 +33,12 @@ class Comment(models.Model):
     text = models.TextField()
     created = models.DateTimeField(
         'Дата добавления', auto_now_add=True, db_index=True)
+
+    def __str__(self) -> str:
+        """Возвращает значение всех полей комментария."""
+        return (
+            f'{self.author}, '
+            f'{self.post}, '
+            f'{self.text[:20]}, '
+            f'{self.created}.'
+        )
