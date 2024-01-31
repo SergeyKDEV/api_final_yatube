@@ -45,9 +45,19 @@ class Comment(models.Model):
 
 
 class Group(models.Model):
-    """Модель для групп. """
-    
-    pass
+    """Модель для сообществ."""
+
+    title = models.TextField(max_length=50)
+    slug = models.SlugField(unique=True)
+    description = models.TextField()
+
+    def __str__(self) -> str:
+        """Возвращает все поля сообщества."""
+        return (
+            f'{self.title[:20]}, '
+            f'{self.slug}, '
+            f'{self.description}.'
+        )
 
 
 class Follow(models.Model):
