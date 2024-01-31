@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
-from posts.models import Comment, Group, Post
+from posts.models import Comment, Follow, Group, Post
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -41,3 +41,27 @@ class CommentSerializer(serializers.ModelSerializer):
         """Метакласс сериализатора Comment."""
         fields = '__all__'
         model = Comment
+
+
+class FollowSerializer(serializers.ModelSerializer):
+    """
+    Сериализатор модели Comment.
+
+    Атрибуты:
+    user : SlugRelatedField
+        поле для вывода имени подписчика из модели User по полю 'username'
+    following : SlugRelatedField
+        поле для вывода имени автора из модели User по полю 'username'
+    """
+
+    user = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+    following = serializers.SlugRelatedField(
+        read_only=True, slug_field='username'
+    )
+
+    class Meta:
+        """Метакласс сериализатора Follow."""
+        fields = '__all__'
+        model = Follow
