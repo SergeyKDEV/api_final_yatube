@@ -5,6 +5,8 @@ User = get_user_model()
 
 
 class Post(models.Model):
+    """Модель для постов."""
+
     text = models.TextField()
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     author = models.ForeignKey(
@@ -17,6 +19,8 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+    """Модель для комментариев."""
+    
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(
