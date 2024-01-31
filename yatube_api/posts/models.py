@@ -4,12 +4,38 @@ from django.db import models
 User = get_user_model()
 
 
+class Group(models.Model):
+    """Модель для сообществ."""
+
+    title = models.TextField(max_length=50, verbose_name='Название')
+    slug = models.SlugField(unique=True, verbose_name='Слаг')
+    description = models.TextField(verbose_name='Описание')
+
+    class Meta:
+        """Дополнительная информация о модели Group."""
+        verbose_name = 'группы'
+        verbose_name_plural = 'Группы'
+
+    def __str__(self) -> str:
+        """Возвращает все поля сообщества."""
+        return (
+            f'{self.title[:20]} | '
+            f'{self.slug} | '
+            f'{self.description};'
+        )
+
+
 class Post(models.Model):
     """Модель для постов."""
 
-    text = models.TextField(verbose_name='Текст')
+    text = models.TextField(
+        blank=False,
+        verbose_name='Текст'
+    )
     pub_date = models.DateTimeField(
-        auto_now_add=True, verbose_name='Дата публикации')
+        auto_now_add=True,
+        verbose_name='Дата публикации'
+    )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -21,6 +47,13 @@ class Post(models.Model):
         null=True,
         blank=True,
         verbose_name='Изображение'
+    )
+    group = models.ForeignKey(
+        Group,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name='Группа'
     )
 
     class Meta:
@@ -67,29 +100,7 @@ class Comment(models.Model):
             f'{self.author} | '
             f'{self.post} | '
             f'{self.text[:20]} | '
-            f'{self.created};'
-        )
-
-
-class Group(models.Model):
-    """Модель для сообществ."""
-
-    title = models.TextField(max_length=50, verbose_name='Название')
-    slug = models.SlugField(unique=True, verbose_name='Слаг')
-    description = models.TextField(verbose_name='Описание')
-
-    class Meta:
-        """Дополнительная информация о модели Group."""
-        verbose_name = 'группы'
-        verbose_name_plural = 'Группы'
-
-    def __str__(self) -> str:
-        """Возвращает все поля сообщества."""
-        return (
-            f'{self.title[:20]} | '
-            f'{self.slug} | '
-            f'{self.description};'
-        )
+            f'{self.created};')
 
 
 class Follow(models.Model):
