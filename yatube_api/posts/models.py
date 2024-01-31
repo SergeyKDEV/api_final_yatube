@@ -14,13 +14,18 @@ class Post(models.Model):
     image = models.ImageField(
         upload_to='posts/', null=True, blank=True)
 
-    def __str__(self):
-        return self.text
+    def __str__(self) -> str:
+        """Возвращает значение всех полей поста, кроме изображения."""
+        return (
+            f'{self.text[:20]}, '
+            f'{self.pub_date}, '
+            f'{self.author}.'
+        )
 
 
 class Comment(models.Model):
     """Модель для комментариев."""
-    
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name='comments')
     post = models.ForeignKey(
