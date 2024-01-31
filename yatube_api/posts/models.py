@@ -8,10 +8,11 @@ class Group(models.Model):
     """Модель для сообществ."""
 
     title = models.TextField(
-        max_length=50,
+        max_length=200,
         verbose_name='Название'
     )
     slug = models.SlugField(
+        max_length=50,
         unique=True,
         verbose_name='Слаг'
     )
