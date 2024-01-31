@@ -63,4 +63,16 @@ class Group(models.Model):
 class Follow(models.Model):
     """Модель для подписок."""
 
-    pass
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='user', null=True
+    )
+    following = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='following', null=True
+    )
+
+    def __str__(self):
+        """Возвращает все поля подписки."""
+        return (
+            f'{self.user}, '
+            f'{self.following}.'
+        )
