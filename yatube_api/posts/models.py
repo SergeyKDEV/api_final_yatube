@@ -42,3 +42,15 @@ class Comment(models.Model):
             f'{self.text[:20]}, '
             f'{self.created}.'
         )
+
+
+class Group(models.Model):
+    """Модель для групп. """
+    
+    pass
+
+
+class Follow(models.Model):
+    """Модель для подписок."""
+
+    pass
