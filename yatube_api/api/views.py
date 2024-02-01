@@ -1,10 +1,15 @@
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.permissions import (IsAuthenticated,
+                                        IsAuthenticatedOrReadOnly)
 
-from posts.models import Group, Post
+from posts.models import Follow, Group, Post
 
 from .permissions import IsAuthorOrReadOnly
-from .serializers import GroupSerializer, PostSerializer
+from .serializers import (FollowSerializer,
+                          GroupSerializer,
+                          PostSerializer)
 
 
 class PostViewSet(ModelViewSet):
@@ -22,8 +27,8 @@ class PostViewSet(ModelViewSet):
 
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
-    pagination_class = (LimitOffsetPagination,)
+    permission_classes = (IsAuthorOrReadOnly, IsAuthenticatedOrReadOnly,)
+    pagination_class = LimitOffsetPagination
 
     def perform_create(self, serializer):
         """Создает пост с автором из запроса."""
