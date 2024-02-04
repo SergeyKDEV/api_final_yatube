@@ -1,3 +1,4 @@
+from rest_framework.generics import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
@@ -5,7 +6,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from posts.models import Group, Post
 
 from .permissions import IsAuthorOrReadOnly
-from .serializers import GroupSerializer, PostSerializer
+from .serializers import CommentSerializer, GroupSerializer, PostSerializer
 
 
 class PostViewSet(ModelViewSet):
@@ -57,7 +58,20 @@ class CommentViewSet(ModelViewSet):
     - DELETE.
     """
 
-    queryset = None
+    serializer_class = CommentSerializer
+    permission_classes = (IsAuthorOrReadOnly, IsAuthenticatedOrReadOnly,)
+
+    def get_post(self):
+        """Получает объект поста с комментарием."""
+        return get_object_or_404(Post, id=self.kwargs.get('post_id'))
+
+    def get_queryset(self):
+        """Возвращает комментарии к посту."""
+        return self.get_post().comments.all()
+
+    def perform_create(self, serializer):
+        """Создает комментарий к посту, записывает пользователя в авторы."""
+        serializer.save(author=self.request.user, post=self.get_post())
 
 
 class FollowViewSet(ModelViewSet):
