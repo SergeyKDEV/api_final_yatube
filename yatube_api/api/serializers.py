@@ -70,5 +70,5 @@ class FollowSerializer(serializers.ModelSerializer):
 
     class Meta:
         """Метакласс сериализатора Follow."""
-        fields = '__all__'
+        fields = 'user', 'following'
         model = Follow
