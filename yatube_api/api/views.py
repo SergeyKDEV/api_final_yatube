@@ -112,6 +112,6 @@ class FollowViewSet(ModelViewSet):
         if user == following:
             raise ValidationError('Вы не можете подписаться на себя!')
         elif self.get_queryset().filter(following=following):
-            raise ValidationError(f'Вы уже подписаны на автора "{following}"!')
+            raise ValidationError(f'Вы уже подписаны на автора {following}!')
 
         serializer.save(user=user, following=following)
