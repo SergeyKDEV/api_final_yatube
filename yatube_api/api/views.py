@@ -96,13 +96,12 @@ class FollowViewSet(ModelViewSet):
     filter_backends = (SearchFilter,)
     search_fields = ('following__username',)
 
-    def get_user(self):
-        """Получает объект поста с комментарием."""
-        return get_object_or_404(User, username=self.request.user)
-
     def get_queryset(self):
         """Возвращает комментарии к посту."""
-        return self.get_user().following.all()
+        return get_object_or_404(
+            User,
+            username=self.request.user
+        ).following.all()
 
     def perform_create(self, serializer):
         """Создает подписку, возвращает ошибку если дубль или самоподписка."""
