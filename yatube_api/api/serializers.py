@@ -33,7 +33,7 @@ class CommentSerializer(serializers.ModelSerializer):
         поле для вывода имени автора из модели User по полю 'username'.
     """
 
-    author = serializers.SlugRelatedField(
+    author = SlugRelatedField(
         read_only=True, slug_field='username'
     )
 
@@ -55,13 +55,13 @@ class FollowSerializer(serializers.ModelSerializer):
         поле для вывода имени автора из модели User по полю 'username'
     """
 
-    user = serializers.SlugRelatedField(
+    user = SlugRelatedField(
         read_only=False,
         queryset=User.objects.all(),
         slug_field='username',
         required=False
     )
-    following = serializers.SlugRelatedField(
+    following = SlugRelatedField(
         read_only=False,
         queryset=User.objects.all(),
         slug_field='username',
