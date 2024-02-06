@@ -70,3 +70,17 @@ class FollowSerializer(serializers.ModelSerializer):
         """Метакласс сериализатора Follow."""
         fields = 'user', 'following'
         model = Follow
+
+    def validate(self, data):
+        """Проверка на самоподписку и дубликаты."""
+        user = self.context['request'].user
+        following = data.get('following')
+
+        if user == following:
+            raise serializers.ValidationError(
+                'Вы не можете подписаться на себя!')
+        elif Follow.objects.filter(user=user, following=following).exists():
+            raise serializers.ValidationError(
+                f'Вы уже подписаны на автора {following}!')
+
+        return data
