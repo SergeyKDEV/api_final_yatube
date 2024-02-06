@@ -139,6 +139,16 @@ class Follow(models.Model):
 
     class Meta:
         """Дополнительная информация о модели Follow."""
+        constraints = [
+            models.CheckConstraint(
+                name='%(app_label)s_%(class)s_prevent_to_self_follow',
+                check=~models.Q(user=models.F('following')),
+            ),
+            models.UniqueConstraint(
+                fields=['user', 'following'],
+                name='%(app_label)s_%(class)s_prevent_to_exists_follow',
+            ),
+        ]
         verbose_name = 'подписки'
         verbose_name_plural = 'Подписки'
 
