@@ -101,7 +101,7 @@ class FollowViewSet(ModelViewSet):
         return get_object_or_404(
             User,
             username=self.request.user
-        ).following.all()
+        ).user.all()
 
     def perform_create(self, serializer):
         """Создает подписку, возвращает ошибку если дубль или самоподписка."""

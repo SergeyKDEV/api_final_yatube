@@ -56,13 +56,11 @@ class FollowSerializer(serializers.ModelSerializer):
     """
 
     user = SlugRelatedField(
-        read_only=False,
-        queryset=User.objects.all(),
+        read_only=True,
         slug_field='username',
         required=False
     )
     following = SlugRelatedField(
-        read_only=False,
         queryset=User.objects.all(),
         slug_field='username',
         required=True
