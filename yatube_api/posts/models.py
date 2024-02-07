@@ -68,7 +68,7 @@ class Post(models.Model):
 
     class Meta:
         """Дополнительная информация о модели Post."""
-        ordering = ['pub_date']
+        ordering = ('pub_date',)
         verbose_name = 'пост'
         verbose_name_plural = 'Посты'
 
