@@ -96,10 +96,7 @@ class FollowViewSet(ModelViewSet):
 
     def get_queryset(self):
         """Возвращает комментарии к посту."""
-        return get_object_or_404(
-            User,
-            username=self.request.user
-        ).user.all()
+        return self.request.user.user.all()
 
     def perform_create(self, serializer):
         """Создает подписку, возвращает ошибку если дубль или самоподписка."""
