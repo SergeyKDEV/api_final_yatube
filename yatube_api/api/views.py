@@ -103,7 +103,4 @@ class FollowViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         """Создает подписку, возвращает ошибку если дубль или самоподписка."""
-        serializer.save(
-            user=self.request.user,
-            following=serializer.validated_data.get('following')
-        )
+        serializer.save(user=self.request.user)
